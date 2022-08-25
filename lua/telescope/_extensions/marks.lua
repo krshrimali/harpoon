@@ -50,17 +50,6 @@ local generate_new_finder = function()
 end
 
 local delete_harpoon_mark = function(prompt_bufnr)
-    local confirmation = vim.fn.input(
-        string.format("Delete current mark(s)? [y/n]: ")
-    )
-    if
-        string.len(confirmation) == 0
-        or string.sub(string.lower(confirmation), 0, 1) ~= "y"
-    then
-        print(string.format("Didn't delete mark"))
-        return
-    end
-
     local selection = action_state.get_selected_entry()
     harpoon_mark.rm_file(selection.filename)
 
@@ -103,6 +92,7 @@ return function(opts)
         previewer = conf.grep_previewer(opts),
         attach_mappings = function(_, map)
             map("i", "<c-d>", delete_harpoon_mark)
+            map("n", "<dd>", delete_harpoon_mark)
             map("n", "<c-d>", delete_harpoon_mark)
             -- TODO: implement move_mark_up
             -- map("i", "<c-p>", move_mark_up)
